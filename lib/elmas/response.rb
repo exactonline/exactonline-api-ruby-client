@@ -7,6 +7,7 @@ module Elmas
 
     def initialize(response)
       @response = response
+      log_error if fail?
     end
 
     def success?
@@ -23,7 +24,7 @@ module Elmas
 
     def results
       results = []
-      if parsed.results.any?
+      if parsed.results
         parsed.results.each do |attributes|
           klass = resolve_class
           results << klass.send(:new, attributes)
@@ -32,13 +33,21 @@ module Elmas
       results
     end
 
+    def result
+      klass = resolve_class
+      klass.send(:new, parsed.result)
+    end
+
     def first
-      results.first if results
+      results ? results.first : result
     end
 
     def type
-      return unless parsed.results.any?
-      c_type = parsed.results.first["__metadata"]["type"]
+      if parsed.metadata
+        c_type = parsed.metadata["type"]
+      elsif parsed.results.any?
+        c_type = parsed.results.first["__metadata"]["type"]
+      end
       c_type.split(".").last
     end
 
@@ -48,6 +57,15 @@ module Elmas
 
     def fail?
       ERROR_CODES.include? status
+    end
+
+    def error_message
+      parsed.error_message
+    end
+
+    def log_error
+      message = "An error occured, the response had status #{status}. The content of the error was: #{error_message}"
+      Elmas.error(message)
     end
 
     def unauthorized?
@@ -63,7 +81,7 @@ module Elmas
     ]
 
     UNAUTHORIZED_CODES = [
-      401, 402, 403
+      400, 401, 402, 403
     ]
 
     private

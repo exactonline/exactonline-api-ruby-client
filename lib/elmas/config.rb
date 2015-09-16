@@ -43,7 +43,7 @@ module Elmas
     DEFAULT_ENDPOINT = "api/v1".freeze
 
     # the division code you want to connect with
-    DEFAULT_DIVISION =  ""
+    DEFAULT_DIVISION = ""
 
     # The response format appended to the path and sent in the 'Accept' header if none is set
     #

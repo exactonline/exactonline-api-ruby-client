@@ -1,0 +1,76 @@
+require 'spec_helper'
+
+describe Elmas::Document do
+  it "can initialize" do
+    document = Elmas::Document.new
+    expect(document).to be_a(Elmas::Document)
+  end
+
+  it "returns value for getters" do
+    document = Elmas::Document.new({ "Account" => "345" })
+    expect(document.account).to eq "345"
+  end
+
+  it "crashes and burns when getting an unset attribute" do
+    document = Elmas::Document.new({ name: "Piet" })
+    expect(document.try(:account)).to eq nil
+  end
+
+  it "is valid with certain attributes" do
+    document = Elmas::Document.new({ subject: "BAM", type: 2 })
+    expect(document.valid?).to eq(true)
+  end
+
+  it "is not valid without certain attributes" do
+    document = Elmas::Document.new
+    expect(document.valid?).to eq(false)
+  end
+
+  let(:resource) { resource = Elmas::Document.new(id: "23", account: "1223") }
+
+  context "Applying filters" do
+    it "should apply ID filter for find" do
+      expect(Elmas).to receive(:get).with("documents/Documents(guid'23')?")
+      resource.find
+    end
+
+    it "should apply no filters for find_all" do
+      expect(Elmas).to receive(:get).with("documents/Documents?")
+      resource.find_all
+    end
+
+    it "should apply given filters for find_by" do
+      expect(Elmas).to receive(:get).with("documents/Documents?$filter=Account+eq+'1223'&$filter=ID+eq+guid'23'")
+      resource.find_by(filters: [:account, :id])
+    end
+  end
+
+  context "Applying order" do
+    it "should apply the order_by and filters" do
+      expect(Elmas).to receive(:get).with("documents/Documents?$order_by=Account&$filter=Account+eq+'1223'&$filter=ID+eq+guid'23'")
+      resource.find_by(filters: [:account, :id], order_by: :account)
+    end
+
+    it "should only apply the order_by" do
+      expect(Elmas).to receive(:get).with("documents/Documents?$order_by=Account")
+      resource.find_all(order_by: :account)
+    end
+  end
+
+  context "Applying select" do
+    it "should apply one select" do
+      expect(Elmas).to receive(:get).with("documents/Documents?$select=Account")
+      resource.find_all(select: [:account])
+    end
+
+    it "should apply one select with find_by" do
+      expect(Elmas).to receive(:get).with("documents/Documents?$select=Account")
+      resource.find_by(select: [:account])
+    end
+
+    it "should apply one select" do
+      expect(Elmas).to receive(:get).with("documents/Documents?$select=Account,Id")
+      resource.find_all(select: [:account, :id])
+    end
+  end
+end

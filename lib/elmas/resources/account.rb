@@ -30,7 +30,7 @@ module Elmas
         :payment_condition_purchase, :payment_condition_sales, :phone,
         :phone_extension, :postcode, :price_list, :purchase_currency,
         :purchase_lead_days, :purchase_VAT_code, :recipient_of_commissions,
-        :remarks, :reseller, :sales_currency, :sales_tax_schedule, :sales_vat_code,
+        :remarks, :reseller, :sales_currency, :sales_tax_schedule, :sales_VAT_code,
         :search_code, :security_level, :seperate_inv_per_project, :seperate_inv_per_subscription,
         :shipping_lead_days, :shipping_method, :start_date, :state, :status,
         :VAT_liability, :VAT_number, :website

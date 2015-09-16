@@ -22,7 +22,7 @@ Or install it yourself as:
 
     $ gem install elmas
 
-## Usage
+## Authorization and Setup
 
 You have to have an Exact Online account and an app setup to connect with.
 
@@ -46,7 +46,32 @@ before the api request.
 Elmas.configure do |config|
   config.access_token = Elmas.authorize(ENV['EXACT_USER_NAME'], ENV['EXACT_PASSWORD']).access_token
 end
+```
+Now you're authorized you can set your current division
+```ruby
+Elmas.configure do |config|
+  config.division = Elmas.authorize_division
+end
+```
 
+So combining all of this results in
+```ruby
+Elmas.configure do |config|
+  config.client_id = ENV['CLIENT_ID']
+  config.client_secret = ENV['CLIENT_SECRET']
+end
+Elmas.configure do |config|
+  config.access_token = Elmas.authorize(ENV['EXACT_USER_NAME'], ENV['EXACT_PASSWORD']).access_token
+end
+Elmas.configure do |config|
+  config.division = Elmas.authorize_division
+end
+```
+
+You should make sure that when you do a request you're authorized. So build in something like the
+following code into your application, that checks wether you're authorized and otherwise authorizes
+again.
+```ruby
 #The client will now be authorized for 10 minutes,
 # if there are requests the time will be reset,
 # otherwise authorization should be called again.
@@ -57,12 +82,29 @@ unless Elmas.authorized?
 end
 ```
 
+## GET, PUT, POST requests
+
+For any of the following requests (GET, PUT, POST), to get the results do the following. (the exact API always returns a List)
+```ruby
+contact = Elmas::Contact.new(id: "23445")
+response = contact.find
+puts response.first
+# Prints something like this
+# [<Elmas::Contact:0x007fb0a55782f0 @attributes={:__metadata=>{"uri"=>"https://start.exactonline.nl/api/v1/797636/crm/Contacts(guid'23445')", "type"=>"Exact.Web.Api.Models.Contact"}, :id=>"23445", :person=>"88380fa4-97bc-4ddf-90e3-b0e7befb112c"}>
+
+contact = Elmas::Contact.new.find_all
+response = contact.find_all
+puts response.results
+# Prints something like this
+# [<Elmas::Contact:0x007fb0a55782f0 @attributes={:__metadata=>{"uri"=>"https://start.exactonline.nl/api/v1/797636/crm/Contacts(guid'23445')", "type"=>"Exact.Web.Api.Models.Contact"}, :id=>"23445", :person=>"88380fa4-97bc-4ddf-90e3-b0e7befb112c"}>, <Elmas::Contact:0x007fb0a55782f0 @attributes={:__metadata=>{"uri"=>"https://start.exactonline.nl/api/v1/797636/crm/Contacts(guid'23445')", "type"=>"Exact.Web.Api.Models.Contact"}, :id=>"23445", :person=>"88380fa4-97bc-4ddf-90e3-b0e7befb112c"}>]
+```
+
 To find a contact
 
 ```ruby
 contact = Elmas::Contact.new(id: "23445")
 contact.find
-# path = /crm/Contacts?$filter=ID eq guid'23445'
+# path = /crm/Contacts(guid'23445')
 ```
 
 To find a contact with specific filters
@@ -115,6 +157,34 @@ To create a new contact
 ```ruby
 contact = Elmas::Contact.new(first_name: "Karel", last_name: "Appel"  )
 contact.save
+```
+
+### SalesInvoice flow
+SalesInvoices have a relationship with SalesInvoiceLines. A SalesInvoice has many
+SalesInvoiceLines and a SalesInvoiceLine belongs to a SalesInvoice. To create a
+valid SalesInvoice you need to embed the SalesInvoiceLines
+
+```ruby
+sales_invoice = Elmas::SalesInvoice.new(journal: "id of your journal", ordered_by: "id of customer")
+```
+Now it still needs SalesInvoiceLines
+```ruby
+sales_invoice_lines = []
+sales_invoice_lines << Elmas::SalesInvoiceLine.new(item: "id of item being sold") # do this for each item you want in the invoice.
+sales_invoice.sales_invoice_lines = sales_invoice_lines
+```
+Now you can save the SalesInvoice and it will be parsed to the following
+```ruby
+sales_invoice.save
+# Sanitized object: {"Journal"=>"id of your journal", "OrderedBy"=>"id of customer", "SalesInvoiceLines"=>[{"Item"=>"id of item being sold"}]}
+```
+
+If you have a SalesInvoice with an id(so saved before already), you can also create invoice lines without embedding
+```ruby
+sales_invoice = Elmas::SalesInvoice.new({id: "1"}).first
+sales_invoice_line = Elmas::SalesInvoiceLine.new(invoice_ID: sales_invoice, item: "42")
+sales_invoice.save
+# Sanitized object: {"Item"=>"42", "InvoiceID"=>"1"}
 ```
 
 For many resources there are mandatory attributes, you can see that in the classes

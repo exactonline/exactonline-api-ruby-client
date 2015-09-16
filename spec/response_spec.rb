@@ -29,6 +29,10 @@ describe Elmas::Response do
     }.to_json
   }
 
+  let(:error_json) {
+    "{\r\n\"error\": {\r\n\"code\": \"\", \"message\": {\r\n\"lang\": \"\", \"value\": \"Unrecognized 'Edm.Guid' literal 'guid'dsadsds'' in '6'.\"\r\n}\r\n}\r\n}"
+  }
+
   let(:unknown_class_json) {
     {
       "d" => {
@@ -70,11 +74,11 @@ describe Elmas::Response do
   }
 
   let(:random_fail_response) {
-    Faraday::Response.new(status: Elmas::Response::ERROR_CODES.sample)
+    Faraday::Response.new(status: Elmas::Response::ERROR_CODES.sample, body: error_json)
   }
 
   let(:random_unauthorized_response) {
-    Faraday::Response.new(status: Elmas::Response::UNAUTHORIZED_CODES.sample)
+    Faraday::Response.new(status: Elmas::Response::UNAUTHORIZED_CODES.sample, body: error_json)
   }
 
   let(:random_success_response) {
@@ -95,6 +99,10 @@ describe Elmas::Response do
 
   it "resolves the type for a request properly" do
     expect(Elmas::Response.new(good_response).type).to eq("Contact")
+  end
+
+  it "resolves the error for a failed request properly" do
+    expect(Elmas::Response.new(random_fail_response).error_message).to eq("Unrecognized 'Edm.Guid' literal 'guid'dsadsds'' in '6'.")
   end
 
   it "resolves the unknown class for a request properly" do

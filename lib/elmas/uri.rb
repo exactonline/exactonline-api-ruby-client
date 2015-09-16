@@ -9,7 +9,11 @@ module Elmas
         options.each do |option|
           send("apply_#{option}".to_sym)
         end
-        uri = URI(base_path)
+        if options.include?(:id)
+          uri = URI("#{base_path}(guid'#{id}')")
+        else
+          uri = URI(base_path)
+        end
         uri.query = URI.encode_www_form(@query)
         uri
       end

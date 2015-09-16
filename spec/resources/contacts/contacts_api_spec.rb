@@ -25,7 +25,7 @@ describe Elmas::Contact do
   context "Applying filters" do
     it "should apply ID filter for find" do
       resource = Elmas::Contact.new(id: "23")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$filter=ID+eq+guid'23'")
+      expect(Elmas).to receive(:get).with("crm/Contacts(guid'23')?")
       resource.find
     end
 

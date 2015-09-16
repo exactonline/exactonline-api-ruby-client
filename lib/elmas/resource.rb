@@ -1,26 +1,31 @@
 require File.expand_path("../utils", __FILE__)
 require File.expand_path("../exception", __FILE__)
 require File.expand_path("../uri", __FILE__)
+require File.expand_path("../sanitizer", __FILE__)
 
 module Elmas
   module Resource
     include UriMethods
-
-    STANDARD_FILTERS = [:id].freeze
+    include Sanitizer
 
     attr_accessor :attributes, :url
     attr_reader :response
 
     def initialize(attributes = {})
       @attributes = Utils.normalize_hash(attributes)
-      @filters = STANDARD_FILTERS
+      @filters = []
       @query = []
+    end
+
+    def id
+      @attributes[:id]
     end
 
     def find_all(options = {})
       @order_by = options[:order_by]
       @select = options[:select]
-      get(uri([:order, :select]))
+      response = get(uri([:order, :select]))
+      response.results if response
     end
 
     # Pass filters in an array, for example 'filters: [:id, :name]'
@@ -28,12 +33,14 @@ module Elmas
       @filters = options[:filters]
       @order_by = options[:order_by]
       @select = options[:select]
-      get(uri([:order, :select, :filters]))
+      response = get(uri([:order, :select, :filters]))
+      response.results if response
     end
 
     def find
       return nil unless id?
-      get(uri([:filters]))
+      response = get(uri([:id]))
+      response.result if response
     end
 
     # Normally use the url method (which applies the filters) but sometimes you only want to use the base path or other paths
@@ -70,18 +77,6 @@ module Elmas
     def delete
       return nil unless id?
       Elmas.delete(basic_identifier_uri)
-    end
-
-    # Parse the attributes for to post to the API
-    def sanitize
-      to_submit = {}
-      @attributes.each do |key, value|
-        next if key == :id || !valid_attribute?(key)
-        key = Utils.parse_key(key)
-        value.is_a?(Elmas::Resource) ? submit_value = value.id : submit_value = value # Turn relation into ID
-        to_submit[key] = submit_value
-      end
-      to_submit
     end
 
     # Getter/Setter for resource

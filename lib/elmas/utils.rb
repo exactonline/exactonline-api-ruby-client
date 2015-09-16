@@ -37,7 +37,7 @@ module Elmas
     end
 
     def self.normalize_hash(hash)
-      Hash[hash.map { |k, v| [Utils.normalize_hash_key(k), v] }]
+      Hash[hash.map { |k, v| [Utils.normalize_hash_key(k), v] }] if hash
     end
 
     def self.parse_key(key)
