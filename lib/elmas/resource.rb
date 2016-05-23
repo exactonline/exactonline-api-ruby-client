@@ -97,10 +97,9 @@ module Elmas
     private
 
     def ensure_fresh_authorization
-      unless Elmas.authorized?
-        Elmas.configure do |config|
-          config.access_token = Elmas.authorize(ENV['EXACT_USER_NAME'], ENV['EXACT_PASSWORD']).access_token
-        end
+      return if Elmas.authorized?
+      Elmas.configure do |config|
+        config.access_token = Elmas.authorize(ENV["EXACT_USER_NAME"], ENV["EXACT_PASSWORD"]).access_token
       end
     end
 
