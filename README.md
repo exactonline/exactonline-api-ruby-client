@@ -5,6 +5,8 @@
 
 # Elmas
 
+[![Join the chat at https://gitter.im/exactonline/exactonline-api-ruby-client](https://badges.gitter.im/exactonline/exactonline-api-ruby-client.svg)](https://gitter.im/exactonline/exactonline-api-ruby-client?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Elmas means diamond, but in this case it's an API wrapper for [Exact Online](https://developers.exactonline.com/).
 
 ## Installation
