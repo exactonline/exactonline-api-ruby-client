@@ -10,6 +10,9 @@ describe Elmas::Request do
   let(:url_with_division) { "#{base_url}/#{division}"}
 
   before :each do
+    stub_request(:get, "https://start.exactonline.nl/api/v1//Current/Me").
+       with(:headers => {'Accept'=>'application/response_format', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'Bearer access_token', 'Content-Type'=>'application/response_format', 'User-Agent'=>'Ruby'}).
+       to_return(:status => 200, :body => "", :headers => {})
     Elmas.configure do |config|
       config.base_url = base_url
       config.endpoint = endpoint

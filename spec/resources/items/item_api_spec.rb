@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Elmas::Item do
+
+  before do
+    stub_request(:get, "https://start.exactonline.nl/api/v1//Current/Me").
+       with(:headers => {'Accept'=>'application/response_format', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'Bearer access_token', 'Content-Type'=>'application/response_format', 'User-Agent'=>'Ruby'}).
+       to_return(:status => 200, :body => "", :headers => {})
+  end
+
   it "can initialize" do
     item = Elmas::Item.new
     expect(item).to be_a(Elmas::Item)
