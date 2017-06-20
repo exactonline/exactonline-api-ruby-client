@@ -18,7 +18,7 @@ describe Elmas::Item do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    item = Elmas::Item.new({ name: "Piet" })
+    item = Elmas::Item.new({ description: "Piet" })
     expect(item.try(:code)).to eq nil
   end
 

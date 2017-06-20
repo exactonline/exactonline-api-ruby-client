@@ -18,7 +18,7 @@ describe Elmas::Costunit do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    costunit = Elmas::Costunit.new({ name: "Piet" })
+    costunit = Elmas::Costunit.new({ description: "Piet" })
     expect(costunit.try(:code)).to eq nil
   end
 

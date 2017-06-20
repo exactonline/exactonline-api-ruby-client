@@ -18,7 +18,7 @@ describe Elmas::Costcenter do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    costcenter = Elmas::Costcenter.new({ name: "Piet" })
+    costcenter = Elmas::Costcenter.new({ description: "Piet" })
     expect(costcenter.try(:code)).to eq nil
   end
 

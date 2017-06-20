@@ -12,7 +12,7 @@ describe Elmas::AgingReceivablesList do
   end
 
   it "is valid with attributes" do
-    sales_invoice = Elmas::AgingReceivablesList.new(invoice_ID: "abc-def")
+    sales_invoice = Elmas::AgingReceivablesList.new(age_group4: "abc-def")
     expect(sales_invoice.valid?).to eq(true)
   end
 
@@ -24,15 +24,15 @@ describe Elmas::AgingReceivablesList do
     end
 
     it "should apply no filters for find_all" do
-      resource = Elmas::AgingReceivablesList.new(type: 2)
+      resource = Elmas::AgingReceivablesList.new(total_amount: 2)
       expect(Elmas).to receive(:get).with("read/financial/AgingReceivablesList?")
       resource.find_all
     end
 
     it "should apply given filters for find_by" do
-      resource = Elmas::AgingReceivablesList.new(id: "12abcdef-1234-1234-1234-123456abcdef", type: "2")
-      expect(Elmas).to receive(:get).with("read/financial/AgingReceivablesList?$filter=Type+eq+'2'&$filter=ID+eq+guid'12abcdef-1234-1234-1234-123456abcdef'")
-      resource.find_by(filters: [:type, :id])
+      resource = Elmas::AgingReceivablesList.new(id: "12abcdef-1234-1234-1234-123456abcdef", total_amount: "2")
+      expect(Elmas).to receive(:get).with("read/financial/AgingReceivablesList?$filter=TotalAmount+eq+'2'&$filter=ID+eq+guid'12abcdef-1234-1234-1234-123456abcdef'")
+      resource.find_by(filters: [:total_amount, :id])
     end
   end
 end

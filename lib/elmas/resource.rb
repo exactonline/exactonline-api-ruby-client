@@ -12,13 +12,20 @@ module Elmas
     attr_reader :response
 
     def initialize(attributes = {})
-      @attributes = Utils.normalize_hash(attributes)
+      @attributes = validate_attributes(attributes) || {}
       @filters = []
       @query = []
     end
 
     def id
       @attributes[:id]
+    end
+
+    def validate_attributes(attributes)
+      hash = Utils.normalize_hash(attributes)
+      invalid_attributes = hash.keys - valid_attributes - default_attributes
+      fail Elmas::InvalidAttributeException.new(invalid_attributes), "" if valid_attributes.any? && invalid_attributes.any?
+      hash
     end
 
     def find_all(options = {})
@@ -86,6 +93,10 @@ module Elmas
     end
 
     private
+
+    def default_attributes
+      [:__metadata, :id]
+    end
 
     def set_attribute(attribute, value)
       @attributes[attribute.to_sym] = value if valid_attribute?(attribute)

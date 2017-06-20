@@ -18,7 +18,7 @@ describe Elmas::PurchaseEntry do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    purchase_entry = Elmas::PurchaseEntry.new({ name: "Piet" })
+    purchase_entry = Elmas::PurchaseEntry.new({ journal: "Piet" })
     expect(purchase_entry.try(:batch_number)).to eq nil
   end
 

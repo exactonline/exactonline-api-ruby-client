@@ -18,7 +18,7 @@ describe Elmas::GLAccount do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    gl_account = Elmas::GLAccount.new({ name: "Piet" })
+    gl_account = Elmas::GLAccount.new({ description: "Piet" })
     expect(gl_account.try(:code)).to eq nil
   end
 

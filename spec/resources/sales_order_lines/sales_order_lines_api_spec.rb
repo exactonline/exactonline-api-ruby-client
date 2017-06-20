@@ -18,7 +18,7 @@ describe Elmas::SalesOrderLine do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    sales_order_line = Elmas::SalesOrderLine.new({ name: "Piet" })
+    sales_order_line = Elmas::SalesOrderLine.new({ item: "Piet" })
     expect(sales_order_line.try(:order_number)).to eq nil
   end
 
