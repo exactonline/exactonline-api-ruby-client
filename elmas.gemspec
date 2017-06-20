@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.version       = Elmas::Version.to_s
 
   spec.add_dependency "faraday", [">= 0.8", "< 0.10"]
-  spec.add_dependency "mechanize", "2.6.0"
+  spec.add_dependency "mechanize", "2.7.5"
   spec.add_dependency "activesupport"
 
   spec.add_development_dependency "bundler"

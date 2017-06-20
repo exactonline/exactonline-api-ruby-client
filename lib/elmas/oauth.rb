@@ -10,7 +10,7 @@ module Elmas
   module OAuth
     def authorize(user_name, password, options = {})
       agent = Mechanize.new
-
+      agent.log = Logger.new('log/mechanize.log') 
       login(agent, user_name, password, options)
       allow_access(agent)
 
