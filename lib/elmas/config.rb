@@ -1,5 +1,6 @@
 require "faraday"
 require "active_resource/threadsafe_attributes"
+require "logger"
 
 module Elmas
   module Config
@@ -17,7 +18,8 @@ module Elmas
       :endpoint,
       :division,
       :base_url,
-      :refresh_token
+      :refresh_token,
+      :logger
     ].freeze
 
     # By default, don't set a user access token
@@ -59,6 +61,8 @@ module Elmas
     # An array of valid request/response formats
     VALID_FORMATS = [:json].freeze
 
+    DEFAULT_LOGGER = ::Logger.new(STDOUT)
+
     # @private
     threadsafe_attribute(*VALID_OPTIONS_KEYS)
 
@@ -93,6 +97,7 @@ module Elmas
       self.response_format    = DEFAULT_FORMAT
       self.user_agent         = DEFAULT_USER_AGENT
       self.refresh_token      = DEFAULT_REFRESH_TOKEN
+      self.logger             = DEFAULT_LOGGER
     end
   end
 end

@@ -3,7 +3,6 @@ require "elmas/api"
 require "elmas/config"
 require "elmas/response"
 require "elmas/client"
-require "elmas/log"
 require "elmas/resource"
 require "elmas/result_set"
 require "elmas/sanitizer"
@@ -47,7 +46,6 @@ require "elmas/resources/payment_condition"
 
 module Elmas
   extend Config
-  extend Log
 
   def self.client(options = {})
     Elmas::Client.new(options)
@@ -62,5 +60,13 @@ module Elmas
   # Delegate to Elmas::Client
   def self.respond_to?(method, include_all = false)
     client.respond_to?(method, include_all) || super
+  end
+
+  def self.info(msg)
+    logger.info(msg)
+  end
+
+  def self.error(msg)
+    logger.error(msg)
   end
 end

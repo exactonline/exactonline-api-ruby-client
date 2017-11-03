@@ -98,6 +98,18 @@ unless Elmas.authorized?
 end
 ```
 
+### Logger
+
+The default logger is STDOUT. A custom logger can be be configured.
+```ruby
+  dir = File.dirname("./tmp/errors.log")
+  FileUtils.mkdir_p(dir) unless File.directory?(dir)
+
+  Elmas.configure do |config|
+    config.logger = ::Logger.new("./tmp/errors.log", "daily")
+  end
+```
+
 ## Accessing the API
 
 We can retrieve data from the API using the following syntax.
