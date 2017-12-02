@@ -13,12 +13,12 @@ describe Elmas::SalesEntryLine do
   end
 
   it "returns value for getters" do
-    sales_entry_line = Elmas::SalesEntryLine.new({ "AmountFC" => "345" })
-    expect(sales_entry_line.amount_fc).to eq "345"
+    sales_entry_line = Elmas::SalesEntryLine.new({ "EntryID" => "345" })
+    expect(sales_entry_line.entry_ID).to eq "345"
   end
 
   it "crashes and burns when getting an unset attribute" do
-    sales_entry_line = Elmas::SalesEntryLine.new({ name: "Piet" })
+    sales_entry_line = Elmas::SalesEntryLine.new({ entry_ID: "1234" })
     expect(sales_entry_line.try(:amount_FC)).to eq nil
   end
 

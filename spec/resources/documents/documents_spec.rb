@@ -12,7 +12,7 @@ describe Elmas::Document do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    document = Elmas::Document.new({ name: "Piet" })
+    document = Elmas::Document.new({ subject: "Piet" })
     expect(document.try(:account)).to eq nil
   end
 

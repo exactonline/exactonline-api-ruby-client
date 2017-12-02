@@ -13,13 +13,13 @@ describe Elmas::Transaction do
   end
 
   it "returns value for getters" do
-    transaction = Elmas::Transaction.new({ "AmountFC" => "345" })
-    expect(transaction.amount_fc).to eq "345"
+    transaction = Elmas::Transaction.new({ "description" => "345" })
+    expect(transaction.description).to eq "345"
   end
 
   it "crashes and burns when getting an unset attribute" do
-    transaction = Elmas::Transaction.new({ name: "Piet" })
-    expect(transaction.try(:amount_FC)).to eq nil
+    transaction = Elmas::Transaction.new({ description: "A transaction" })
+    expect(transaction.try(:description)).to eq nil
   end
 
   let(:resource) { resource = Elmas::Transaction.new(id: "12abcdef-1234-1234-1234-123456abcdef", description: "1223") }

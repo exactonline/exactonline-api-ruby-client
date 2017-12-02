@@ -20,7 +20,7 @@ describe Elmas::SalesInvoice do
     journal = "another-awesome-journal"
     id = "232878"
     sales_invoice = Elmas::SalesInvoice.new(journal: journal, ordered_by: Elmas::Contact.new(first_name: "Karel", last_name: "Appel", id: id))
-    expect(sales_invoice.sanitize).to eq({"OrderedBy" => id })
+    expect(sales_invoice.sanitize).to eq({"OrderedBy" => id, "Journal" => journal })
   end
 
   context "Applying filters" do

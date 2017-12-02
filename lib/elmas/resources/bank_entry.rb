@@ -15,7 +15,7 @@ module Elmas
     def other_attributes
       %i[
         currency bank_statement_document closing_balance_FC entry_number
-        financial_period financial_year opening_balance_FC
+        financial_period financial_year opening_balance_FC created modified
       ]
     end
   end

@@ -4,7 +4,7 @@ Documentation:
 Lint/UriEscapeUnescape:
   Enabled: false
 
-NAming/FileName:
+Naming/FileName:
   Enabled: false
 
 Style/MethodMissing:

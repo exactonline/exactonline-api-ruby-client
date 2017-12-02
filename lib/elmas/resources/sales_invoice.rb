@@ -17,7 +17,7 @@ module Elmas
 
     def other_attributes
       SHARED_SALES_ATTRIBUTES.inject(
-        %i[sales_invoice_lines due_date sales_person starter_sales_invoice_status type],
+        %i[sales_invoice_lines due_date sales_person starter_sales_invoice_status type journal],
         :<<
       )
     end

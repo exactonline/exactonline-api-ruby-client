@@ -12,7 +12,7 @@ describe Elmas::DocumentAttachment do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    document = Elmas::DocumentAttachment.new({ name: "Piet" })
+    document = Elmas::DocumentAttachment.new({ document: "Piet" })
     expect(document.try(:file_name)).to eq nil
   end
 

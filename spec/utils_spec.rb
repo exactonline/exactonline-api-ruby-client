@@ -44,4 +44,8 @@ describe Elmas::Utils do
   it "normalizes a hash" do
     expect(Elmas::Utils.normalize_hash(original_hash)).to eq(normalized_hash)
   end
+
+  it "normalizes attributes correctly" do
+    expect(Elmas::Utils.normalize_hash({ "AmountFC" => "blaa" })).to eq({ amount_FC: "blaa" })
+  end
 end
