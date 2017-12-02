@@ -8,7 +8,7 @@ describe Elmas::Response do
           {
             "__metadata" => {
               "uri" => "https://start.exactonline.nl/api/v1/current/Me(guid'29dee5ea-9132-474c-b188-e8364ecebadd')",
-              "type" => "Exact.Web.Api.System.Contact"
+              "type" => "Exact.Web.Api.System.Me"
             },
             "CurrentDivision" => 797636,
             "FullName" => "Marthyn Olthof",
@@ -40,7 +40,7 @@ describe Elmas::Response do
           {
             "__metadata" => {
               "uri" => "https://start.exactonline.nl/api/v1/current/Me(guid'29dee5ea-2331-474c-b188-e8364ecebadd')",
-              "type" => "Exact.Web.Api.System.Me"
+              "type" => "Exact.Web.Api.System.Unkown"
             },
             "CurrentDivision" => 797636,
             "FullName" => "Karel Appel",
@@ -94,18 +94,22 @@ describe Elmas::Response do
   end
 
   it "resolves the type for a request properly" do
-    expect(Elmas::Response.new(good_response).results.first.class).to eq(Elmas::Contact)
+    expect(Elmas::Response.new(good_response).results.first.class).to eq(Elmas::Me)
   end
 
   it "resolves the error for a failed request properly" do
     expect { Elmas::Response.new(random_fail_response) }.to raise_exception(Elmas::BadRequestException)
   end
 
-  it "resolves the unknown class for a request properly" do
-    expect(Elmas::Response.new(unkown_class_response).results.first.full_name).to eq("Karel Appel")
+  it "raises an exception for the unknown class for a request properly" do
+    expect{ Elmas::Response.new(unkown_class_response).results.first.full_name }.to raise_exception(Elmas::InvalidResourceException)
+  end
+
+  it "resolves the capital letters attributes for a request properly" do
+    expect(Elmas::Response.new(good_response).results.first.user_ID).to eq("29dee5ea-9132-474c-b188-e8364ecebadd")
   end
 
   it "returns the first result" do
-    expect(Elmas::Response.new(good_response).results.first).to be_a(Elmas::Contact)
+    expect(Elmas::Response.new(good_response).results.first).to be_a(Elmas::Me)
   end
 end

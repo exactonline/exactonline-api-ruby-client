@@ -18,7 +18,7 @@ describe Elmas::GeneralJournalEntry do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    general_journal_entry = Elmas::GeneralJournalEntry.new({ name: "Piet" })
+    general_journal_entry = Elmas::GeneralJournalEntry.new({ currency: "EUR" })
     expect(general_journal_entry.try(:financial_year)).to eq nil
   end
 

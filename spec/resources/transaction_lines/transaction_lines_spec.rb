@@ -13,13 +13,13 @@ describe Elmas::TransactionLine do
   end
 
   it "returns value for getters" do
-    transaction_line = Elmas::TransactionLine.new({ "AmountFC" => "345" })
-    expect(transaction_line.amount_fc).to eq "345"
+    transaction_line = Elmas::TransactionLine.new({ "asset_code" => "12312" })
+    expect(transaction_line.asset_code).to eq "12312"
   end
 
   it "crashes and burns when getting an unset attribute" do
-    transaction_line = Elmas::TransactionLine.new({ name: "Piet" })
-    expect(transaction_line.try(:amount_FC)).to eq nil
+    transaction_line = Elmas::TransactionLine.new({ asset_code: "42" })
+    expect(transaction_line.try(:description)).to eq nil
   end
 
   let(:resource) { resource = Elmas::TransactionLine.new(id: "12abcdef-1234-1234-1234-123456abcdef", asset_code: "1223") }

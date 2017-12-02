@@ -54,8 +54,7 @@ module Elmas
 
         klass
       rescue NameError
-        Elmas.info("Unknown resource encountered, proceed as usual but further resource details might have to be implemented")
-        Class.new { include Elmas::Resource }
+        raise InvalidResourceException.new(type), ""
       end
     end
   end

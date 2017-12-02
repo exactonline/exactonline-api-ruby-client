@@ -13,13 +13,13 @@ describe Elmas::BankEntryLine do
   end
 
   it "returns value for getters" do
-    bank_entry_line = Elmas::BankEntryLine.new({ "AmountFC" => "345" })
-    expect(bank_entry_line.amount_fc).to eq "345"
+    bank_entry_line = Elmas::BankEntryLine.new({ "VATPercentage" => "345" })
+    expect(bank_entry_line.VAT_percentage).to eq "345"
   end
 
   it "crashes and burns when getting an unset attribute" do
-    bank_entry_line = Elmas::BankEntryLine.new({ name: "Piet" })
-    expect(bank_entry_line.try(:amount_FC)).to eq nil
+    bank_entry_line = Elmas::BankEntryLine.new({ project: "Piet" })
+    expect(bank_entry_line.try(:amount_VATFC)).to eq nil
   end
 
   #customer journal salesentrylines

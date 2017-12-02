@@ -18,7 +18,7 @@ describe Elmas::BankEntry do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    sales_entry = Elmas::BankEntry.new({ name: "Piet" })
+    sales_entry = Elmas::BankEntry.new({ journal_code: "232332" })
     expect(sales_entry.try(:financial_year)).to eq nil
   end
 

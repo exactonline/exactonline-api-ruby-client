@@ -18,7 +18,7 @@ describe Elmas::VatCode do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    vat_code = Elmas::VatCode.new({ name: "Piet" })
+    vat_code = Elmas::VatCode.new({ charged: "28" })
     expect(vat_code.try(:code)).to eq nil
   end
 

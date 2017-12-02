@@ -18,7 +18,7 @@ describe Elmas::Contact do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    contact = Elmas::Contact.new({ name: "Piet" })
+    contact = Elmas::Contact.new({ account_name: "Piet" })
     expect(contact.try(:birth_name)).to eq nil
   end
 
@@ -30,49 +30,49 @@ describe Elmas::Contact do
     end
 
     it "should apply no filters for find_all" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
       expect(Elmas).to receive(:get).with("crm/Contacts?")
       resource.find_all
     end
 
     it "should apply given filters for find_by" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$filter=Name+eq+'Karel'&$filter=ID+eq+guid'12abcdef-1234-1234-1234-123456abcdef'")
-      resource.find_by(filters: [:name, :id])
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
+      expect(Elmas).to receive(:get).with("crm/Contacts?$filter=AccountName+eq+'Karel'&$filter=ID+eq+guid'12abcdef-1234-1234-1234-123456abcdef'")
+      resource.find_by(filters: [:account_name, :id])
     end
   end
 
   context "Applying order" do
     it "should apply the order_by and filters" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$orderby=Name&$filter=Name+eq+'Karel'&$filter=ID+eq+guid'12abcdef-1234-1234-1234-123456abcdef'")
-      resource.find_by(filters: [:name, :id], order_by: :name)
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
+      expect(Elmas).to receive(:get).with("crm/Contacts?$orderby=AccountName&$filter=AccountName+eq+'Karel'&$filter=ID+eq+guid'12abcdef-1234-1234-1234-123456abcdef'")
+      resource.find_by(filters: [:account_name, :id], order_by: :account_name)
     end
 
     it "should only apply the order_by" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$orderby=Name")
-      resource.find_all(order_by: :name)
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
+      expect(Elmas).to receive(:get).with("crm/Contacts?$orderby=AccountName")
+      resource.find_all(order_by: :account_name)
     end
   end
 
   context "Applying select" do
     it "should apply one select" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$select=Name")
-      resource.find_all(select: [:name])
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
+      expect(Elmas).to receive(:get).with("crm/Contacts?$select=AccountName")
+      resource.find_all(select: [:account_name])
     end
 
     it "should apply one select with find_by" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$select=Name")
-      resource.find_by(select: [:name])
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
+      expect(Elmas).to receive(:get).with("crm/Contacts?$select=AccountName")
+      resource.find_by(select: [:account_name])
     end
 
     it "should apply one select" do
-      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", name: "Karel")
-      expect(Elmas).to receive(:get).with("crm/Contacts?$select=Name,Age")
-      resource.find_all(select: [:name, :age])
+      resource = Elmas::Contact.new(id: "12abcdef-1234-1234-1234-123456abcdef", account_name: "Karel")
+      expect(Elmas).to receive(:get).with("crm/Contacts?$select=AccountName,Age")
+      resource.find_all(select: [:account_name, :age])
     end
   end
 end

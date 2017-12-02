@@ -32,8 +32,8 @@ module Elmas
         key = key.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
         key = key.gsub(/([a-z\d])([A-Z])/, '\1_\2')
         key = key.tr("-", "_")
-        key = key.downcase
-        return key.to_sym
+        key = key.split("_").map(&:downcase_exact).join("_")
+        return key.intern
       end
       key
     end
@@ -43,8 +43,19 @@ module Elmas
     end
 
     def self.parse_key(key)
+      # TODO: Peter, why is this?
       "VATCode" if key.casecmp "vat_code"
       Utils.camelize(key)
+    end
+  end
+end
+
+class String
+  def downcase_exact
+    if /[[:upper:]]/.match(self[0]) && /[[:upper:]]/.match(self[1])
+      self
+    else
+      downcase
     end
   end
 end

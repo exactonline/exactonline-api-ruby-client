@@ -18,8 +18,8 @@ describe Elmas::ItemGroup do
   end
 
   it "crashes and burns when getting an unset attribute" do
-    item_group = Elmas::ItemGroup.new({ name: "Piet" })
-    expect(item_group.try(:code)).to eq nil
+    item_group = Elmas::ItemGroup.new({ code: "111" })
+    expect(item_group.try(:boom)).to eq nil
   end
 
   let(:resource) { resource = Elmas::ItemGroup.new(id: "12abcdef-1234-1234-1234-123456abcdef", code: "1223") }
