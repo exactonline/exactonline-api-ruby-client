@@ -7,7 +7,7 @@ module Elmas
     include Elmas::Resource
 
     def id
-      @attributes[:EntryID]
+      @attributes[:entry_id]
     end
 
     def base_path
