@@ -4,10 +4,14 @@ module Elmas
   class SalesEntry
     # A sales entry needs multiple sales entry lines
     # It should also have a journal id and a contact id who ordered it
-    include Elmas::Resource
+    prepend Elmas::Resource
 
     def id
       @attributes[:entry_id]
+    end
+
+    def id?
+      !@attributes[:entry_id].nil?
     end
 
     def base_path
