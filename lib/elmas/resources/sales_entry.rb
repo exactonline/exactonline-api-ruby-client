@@ -6,6 +6,14 @@ module Elmas
     # It should also have a journal id and a contact id who ordered it
     include Elmas::Resource
 
+    def id
+      @attributes[:entry_id]
+    end
+
+    def id?
+      !@attributes[:entry_id].nil?
+    end
+
     def base_path
       "salesentry/SalesEntries"
     end

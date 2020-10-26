@@ -17,6 +17,22 @@ describe Elmas::SalesEntry do
     expect(sales_entry.batch_number).to eq "277"
   end
 
+  describe 'methods' do
+    describe 'id' do
+      it "it returns the entry_id" do
+        sales_entry = Elmas::SalesEntry.new({ "EntryId" => "123" })
+        expect(sales_entry.id).to eq "123"
+      end
+    end
+
+    describe 'id?' do
+      it "returns true when entry_id is set" do
+        sales_entry = Elmas::SalesEntry.new({ "EntryId" => "123" })
+        expect(sales_entry.id?).to eq true
+      end
+    end
+  end
+
   it "crashes and burns when getting an unset attribute" do
     sales_entry = Elmas::SalesEntry.new({ name: "Piet" })
     expect(sales_entry.try(:batch_number)).to eq nil
@@ -24,7 +40,7 @@ describe Elmas::SalesEntry do
 
   #customer journal salesentrylines
   it "is valid with mandatory attributes" do
-    sales_entry = Elmas::SalesEntry.new(customer: "82378ks", journal: "my-awesome-journal", sales_entry_lines: ["b","a"])
+    sales_entry = Elmas::SalesEntry.new(customer: "82378ks", journal: "my-awesome-journal", sales_entry_lines: ["b", "a"])
     expect(sales_entry.valid?).to eq(true)
   end
 
