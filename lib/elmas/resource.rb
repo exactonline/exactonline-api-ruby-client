@@ -47,7 +47,7 @@ module Elmas
 
     # Normally use the url method (which applies the filters) but sometimes you only want to use the base path or other paths
     def get(uri = self.uri)
-      @response = Elmas.get(URI.unescape(uri.to_s))
+      @response = Elmas.get(CGI.unescape(uri.to_s))
     end
 
     def valid?
